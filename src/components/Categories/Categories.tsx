@@ -1,24 +1,25 @@
-import { useState } from 'react';
+interface IProps_Square {
+  value: number
+  onChangeCategory: any
+}
 
-function Categories() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
-
+function Categories({ value, onChangeCategory }: IProps_Square) {
+  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
   return (
     <div className="categories">
       <ul>
-        {categories.map((value, index) => (
+        {categories.map((categoryName, index) => (
           <li
             key={index}
-            onClick={() => setActiveIndex(index)}
-            className={activeIndex === index ? 'active' : ''}>
-            {value}
+            onClick={() => onChangeCategory(index)}
+            className={value === index ? 'active' : ''}>
+            {categoryName}
           </li>
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
-export default Categories;
+export default Categories
