@@ -1,3 +1,4 @@
+import React from "react"
 import { useState } from 'react'
 import { useEffect } from 'react'
 
@@ -7,6 +8,7 @@ import Sort from '../components/Sort/Sort'
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import Pagination from '../components/Pagination/Pagination'
+import { SearchContext } from './../App';
 
 type FormatDateProps = {
   id: number
@@ -19,7 +21,8 @@ type FormatDateProps = {
   rating: number
 }
 
-const Home = (searchValue:any|string) => {
+const Home = () => {
+    const { searchValue, setSearchValue } = React.useContext(SearchContext)
   const [items, setItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [categoryId, setCategoriesId] = useState(0)
