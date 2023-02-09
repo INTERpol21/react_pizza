@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { setSort } from '../../redux/slices/filterSlice'
+import { RootState } from '../../redux/store'
 
-interface IProps_Square {
-  value: any
-  onChangeSort: any
-}
 
-function Sort({ value, onChangeSort }: IProps_Square) {
+function Sort() {
+  const dispatch = useDispatch()
+  const sort = useSelector((state: RootState) => state.filter.sort)
+
   const [open, setOpen] = useState(false)
 
   const list = [
@@ -17,8 +19,8 @@ function Sort({ value, onChangeSort }: IProps_Square) {
     { name: 'алфавиту(Увеличение)', sortProperty: '-title' },
   ]
 
-  const onClickListItem = (i: object) => {
-    onChangeSort(i)
+  const onClickListItem = (obj: object) => {
+    dispatch(setSort(obj))
     setOpen(false)
   }
   return (
@@ -36,7 +38,7 @@ function Sort({ value, onChangeSort }: IProps_Square) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{value.name}</span>
+        <span onClick={() => setOpen(!open)}>{sort.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
@@ -45,7 +47,7 @@ function Sort({ value, onChangeSort }: IProps_Square) {
               <li
                 key={index}
                 onClick={() => onClickListItem(obj)}
-                className={value.sortProperty === obj.sortProperty ? 'active' : ''}>
+                className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>
                 {obj.name}
               </li>
             ))}

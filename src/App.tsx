@@ -11,10 +11,7 @@ interface IThemeContext {
   searchValue: string
   setSearchValue: Dispatch<SetStateAction<string>> | any
 }
-const defaultState = {
-  searchValue: '',
-  
-}
+
 
 export const SearchContext = React.createContext<Partial<IThemeContext>>({})
 
