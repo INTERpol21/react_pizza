@@ -2,24 +2,31 @@
 
 .header {
   border-bottom: 1px solid $gray-line;
-  padding: 40px 0;
+  padding: 20px;
 
   .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 
-    @media (max-width:1260px) {
+    @media (max-width: 645px) {
       flex-direction: column;
 
-      .header__cart{
-        margin-top: 30px;
+      .header__cart {
+        margin-top: 20px;
+
       }
+
     }
   }
 
+
+
+
   &__logo {
     display: flex;
+    padding: 20px;
 
     img {
       margin-right: 15px;
@@ -37,4 +44,7 @@
       color: #7b7b7b;
     }
   }
+    &__cart{
+      padding: 10px;
+    }
 }

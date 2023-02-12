@@ -1,36 +1,51 @@
-import React from 'react'
-import Header from './components/Header/Header'
+import Loadable from 'react-loadable'
+import React, { Suspense } from 'react'
+import { Routes, Route } from 'react-router-dom'
+
 import Home from './pages/Home'
+
 import './scss/app.scss'
-import NotFound from './pages/NotFound'
-import { Route, Routes } from 'react-router-dom'
-import Cart from './pages/Cart'
-import { useState } from 'react'
-import { Dispatch, SetStateAction } from 'react'
-interface IThemeContext {
-  searchValue: string
-  setSearchValue: Dispatch<SetStateAction<string>> | any
-}
+import MainLayout from './layouts/MainLayout'
 
+const Cart = Loadable({
+  loader: () => import(/* webpackChunkName: "Cart" */ './pages/Cart'),
+  loading: () => <div>Идёт загрузка корзины...</div>,
+})
 
-export const SearchContext = React.createContext<Partial<IThemeContext>>({})
+const FullPizza = React.lazy(() => import(/* webpackChunkName: "FullPizza" */ './pages/FullPizza'))
+const NotFound = React.lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'))
 
 function App() {
-  const [searchValue, setSearchValue] = useState('')
-
   return (
-    <div className="wrapper">
-      <SearchContext.Provider value={{searchValue, setSearchValue}}>
-        <Header/>
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Home  />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </SearchContext.Provider>
-    </div>
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route path="" element={<Home />} />
+        <Route
+          path="cart"
+          element={
+            <Suspense fallback={<div>Идёт загрузка корзины...</div>}>
+              <Cart />
+            </Suspense>
+          }
+        />
+        <Route
+          path="pizza/:id"
+          element={
+            <Suspense fallback={<div>Идёт загрузка...</div>}>
+              <FullPizza />
+            </Suspense>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<div>Идёт загрузка...</div>}>
+              <NotFound />
+            </Suspense>
+          }
+        />
+      </Route>
+    </Routes>
   )
 }
 

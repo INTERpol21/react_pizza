@@ -1,30 +1,57 @@
-import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { setSort } from '../../redux/slices/filterSlice'
-import { RootState } from '../../redux/store'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { setSort } from '../../redux/filter/slice'
+import { Sort as SortType, SortPropertyEnum } from '../../redux/filter/types'
 
+type SortItem = {
+  name: string
+  sortProperty: SortPropertyEnum
+}
 
-function Sort() {
+type PopupClick = MouseEvent & {
+  path: Node[]
+}
+
+type SortPopupProps = {
+  value: SortType
+}
+
+export const sortList: SortItem[] = [
+  { name: 'популярности (DESC)', sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: 'популярности (ASC)', sortProperty: SortPropertyEnum.RATING_ASC },
+  { name: 'цене (DESC)', sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: 'цене (ASC)', sortProperty: SortPropertyEnum.PRICE_ASC },
+  { name: 'алфавиту (DESC)', sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: 'алфавиту (ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
+]
+
+export const Sort: React.FC<SortPopupProps> = React.memo(({ value }) => {
   const dispatch = useDispatch()
-  const sort = useSelector((state: RootState) => state.filter.sort)
+  const sortRef = React.useRef<HTMLDivElement>(null)
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = React.useState(false)
 
-  const list = [
-    { name: 'популярности(Уменьшение)', sortProperty: 'rating' },
-    { name: 'популярности(Увеличение)', sortProperty: '-rating' },
-    { name: 'цене(Уменьшение)', sortProperty: 'price' },
-    { name: 'цене(Увеличение)', sortProperty: '-price' },
-    { name: 'алфавиту(Уменьшение)', sortProperty: 'title' },
-    { name: 'алфавиту(Увеличение)', sortProperty: '-title' },
-  ]
-
-  const onClickListItem = (obj: object) => {
+  const onClickListItem = (obj: SortItem) => {
     dispatch(setSort(obj))
     setOpen(false)
   }
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClick
+
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
+        setOpen(false)
+      }
+    }
+
+    document.body.addEventListener('click', handleClickOutside)
+
+    return () => document.body.removeEventListener('click', handleClickOutside)
+  }, [])
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -38,16 +65,16 @@ function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{sort.name}</span>
+        <span onClick={() => setOpen(!open)}>{value.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
           <ul>
-            {list.map((obj, index) => (
+            {sortList.map((obj, i) => (
               <li
-                key={index}
+                key={i}
                 onClick={() => onClickListItem(obj)}
-                className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>
+                className={value.sortProperty === obj.sortProperty ? 'active' : ''}>
                 {obj.name}
               </li>
             ))}
@@ -56,6 +83,4 @@ function Sort() {
       )}
     </div>
   )
-}
-
-export default Sort
+})

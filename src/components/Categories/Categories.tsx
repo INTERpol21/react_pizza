@@ -1,25 +1,22 @@
-interface IProps_Square {
+import React from 'react'
+
+type CategoriesProps = {
   value: number
-  onChangeCategory: any
+  onChangeCategory: (idx: number) => void
 }
 
-function Categories({ value, onChangeCategory }: IProps_Square) {
-  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
+const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
+export const Categories: React.FC<CategoriesProps> = React.memo(({ value, onChangeCategory }) => {
   return (
     <div className="categories">
       <ul>
-        {categories.map((categoryName, index) => (
-          <li
-            key={index}
-            onClick={() => onChangeCategory(index)}
-            className={value === index ? 'active' : ''}>
+        {categories.map((categoryName, i) => (
+          <li key={i} onClick={() => onChangeCategory(i)} className={value === i ? 'active' : ''}>
             {categoryName}
           </li>
         ))}
       </ul>
     </div>
   )
-}
-
-export default Categories
+})
