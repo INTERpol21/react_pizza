@@ -16,15 +16,16 @@ const FullPizza: React.FC = () => {
   React.useEffect(() => {
     async function fetchPizza() {
       try {
-        const { data } = await axios.get('https://63de5a77f1af41051b118b2b.mockapi.io/items' + id)
-        setPizza(data);
+        const { data } = await axios.get('https://63de5a77f1af41051b118b2b.mockapi.io/items/' + id)
+        setPizza(data)
       } catch (error) {
-        alert('Ошибка при получении пиццы!');
-        navigate('/');
+        alert('Ошибка при получении пиццы!')
+        navigate('/')
       }
     }
 
-    fetchPizza();
+    fetchPizza()
+    // eslint-disable-next-line
   }, []);
 
   if (!pizza) {

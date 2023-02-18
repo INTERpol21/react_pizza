@@ -18,6 +18,7 @@ const Home: React.FC = () => {
 
   const onChangeCategory = React.useCallback((idx: number) => {
     dispatch(setCategoryId(idx))
+    // eslint-disable-next-line
   }, [])
 
   const onChangePage = (page: number) => {
@@ -47,6 +48,7 @@ const Home: React.FC = () => {
   React.useEffect(() => {
     getPizzas()
     // isMounted.current = true;
+    // eslint-disable-next-line
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
   const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />)
