@@ -18,6 +18,13 @@
   &__image {
     width: 260px;
   }
+    &__image-cart{
+      display: flex;
+        justify-content: center;
+      @media (max-width: 720px){
+        width: 360px;
+      }
+    }
 
   &__title {
     font-size: 20px;
@@ -72,4 +79,6 @@
     line-height: 27px;
     letter-spacing: 0.015em;
   }
+
+
 }

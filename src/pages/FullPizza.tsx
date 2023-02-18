@@ -1,17 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const FullPizza: React.FC = () => {
   const [pizza, setPizza] = React.useState<{
-    imageUrl: string;
-    title: string;
-    price: number;
-  }>();
+    imageUrl: string
+    title: string
+    price: number
+  }>()
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id } = useParams()
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     async function fetchPizza() {
@@ -26,24 +26,26 @@ const FullPizza: React.FC = () => {
 
     fetchPizza()
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   if (!pizza) {
-    return <>Загрузка...</>;
+    return <>Загрузка...</>
   }
 
   return (
     <div className="container">
-      <img src={pizza.imageUrl} alt="Пицца" />
-      <h2>{pizza.title}</h2>
-      <h4>{pizza.price} ₽</h4>
-      <Link to="/">
-        <button className="button button--outline button--add">
-          <span>Назад</span>
-        </button>
-      </Link>
+      <img className="pizza-block__image-cart" src={pizza.imageUrl} alt="Пицца" />
+      <h2 className="pizza-block__title">{pizza.title}</h2>
+      <div className="pizza-block__bottom">
+        <h4 className="pizza-block__price">{pizza.price} ₽</h4>
+        <Link to="/">
+          <button className="button button--outline button--add">
+            <span>Назад</span>
+          </button>
+        </Link>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default FullPizza;
+export default FullPizza
