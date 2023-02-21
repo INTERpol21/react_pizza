@@ -23,8 +23,8 @@ const pizzaSlice = createSlice({
       })
 
       .addCase(fetchPizzas.fulfilled, (state, action) => {
-        state.items = action.payload
         state.status = Status.SUCCESS
+        state.items = action.payload
       })
       .addCase(fetchPizzas.rejected, (state, action) => {
         state.status = Status.ERROR
