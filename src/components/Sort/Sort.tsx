@@ -8,10 +8,6 @@ type SortItem = {
   sortProperty: SortPropertyEnum
 }
 
-type PopupClick = MouseEvent & {
-  composedPath: Node[]
-}
-
 type SortPopupProps = {
   value: SortType
 }
@@ -38,9 +34,7 @@ export const Sort: React.FC<SortPopupProps> = React.memo(({ value }) => {
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const _event = event as PopupClick
-
-      if (sortRef.current && !_event.composedPath.includes(sortRef.current)) {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setOpen(false)
       }
     }
